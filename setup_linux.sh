@@ -17,7 +17,10 @@ sudo apt-get install -y --no-install-recommends \
     ripgrep \
     fd-find \
     neovim \
-    xclip        # optional: system clipboard integration
+    xclip
+
+echo "📦 Installing tree-sitter CLI (for nvim-treesitter parser builds)..."
+npm install -g tree-sitter-cli
 
 # ───── Telescope: fd-find ─────────────────────────────────────────────────
 # On Debian/Ubuntu the binary is named `fdfind`; symlink it so Telescope
@@ -27,19 +30,19 @@ if command -v fdfind &>/dev/null && ! command -v fd &>/dev/null; then
     sudo ln -sf "$(command -v fdfind)" /usr/local/bin/fd
 fi
 
-# ───── Neovim: ensure version ≥ 0.9 (required for treesitter, lazy etc.) ──
+# ───── Neovim: ensure version ≥ 0.12 ────────────────────────────────────
 NVIM_VERSION=$(nvim --version 2>/dev/null | head -1 | grep -oP '\d+\.\d+' || echo "0")
-if awk "BEGIN { exit (!($NVIM_VERSION >= 0.9)) }"; then
-    echo "⚠️  Detected Neovim ${NVIM_VERSION} — < 0.9. Installing latest via PPA..."
-    sudo add-apt-repository -y ppa:neovim-ppa/unstable >/dev/null 2>&1
-    sudo apt-get update -qq
-    sudo apt-get install -y --no-install-recommends neovim
+if awk "BEGIN { exit (!($NVIM_VERSION >= 0.12)) }"; then
+    echo "⚠️  Detected Neovim ${NVIM_VERSION} — < 0.12. Install via AppImage:"
+    echo "   curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage"
+    echo "   chmod u+x nvim-linux-x86_64.appimage"
+    echo "   sudo mv nvim-linux-x86_64.appimage /usr/local/bin/nvim"
 fi
 
 # ───── Verification ────────────────────────────────────────────────────────
 echo ""
 echo "✅ Setup complete — verifying installed tools:"
-for cmd in git make gcc rg fd nvim; do
+for cmd in git make gcc rg fd nvim tree-sitter; do
     if command -v "$cmd" &>/dev/null; then
         echo "   ✔ $cmd  ($(command -v "$cmd"))"
     else
