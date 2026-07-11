@@ -1,124 +1,157 @@
-# init.lua — Neovim config by EugeneKallis
+# Neovim Config
 
-A minimal, fast Neovim setup powered by [lazy.nvim](https://github.com/folke/lazy.nvim). Plugins are focused on productivity: fuzzy finding, git integration, file navigation, and great syntax highlighting.
+> Personal Neovim configuration managed with [lazy.nvim](https://github.com/folke/lazy.nvim).
 
-## Prerequisites
-
-Run the appropriate setup script for your OS before opening Neovim:
-
-| OS      | Script           |
-|---------|------------------|
-| macOS   | `./setup_mac.sh`   |
-| Linux   | `./setup_linux.sh` |
-
-Both scripts install: **git**, **make**, **gcc/clang**, **ripgrep**, **fd**, and **neovim** (≥ 0.9).
-
----
-
-## Plugins
-
-### [lazy.nvim](https://github.com/folke/lazy.nvim)
-Modern plugin manager. Bootstraps itself on first launch — no manual install needed.
-
-### [rose-pine](https://github.com/rose-pine/neovim)
-All-natural colorscheme with a soft, muted palette.  
-Applied on startup as the default theme with a transparent background.
-
-### [vim-fugitive](https://github.com/tpope/vim-fugitive)
-The gold-standard Git wrapper for Vim/Neovim. Run `:Git` (mapped below) for an interactive status window, then stage/unstage/commit/diff from inside Neovim.
-
-### [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
-Highly extensible fuzzy finder. Bridges to **ripgrep** (`live_grep`, `grep_string`) and **fd** (`find_files`) for fast searching. Includes the `fzf-native` sorter for better ranking.
-
-### [harpoon](https://github.com/ThePrimeagen/harpoon) (v2)
-Quick-file bookmarking. Mark files you're working on and jump between them with a single keypress. Opens via a Telescope picker for an overview.
-
-### [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
-Better syntax highlighting, code folding, and structural navigation.  
-Configured to install parsers for: **Python, JavaScript, Go, TypeScript, Bash, Lua**.
-
-### [undotree](https://github.com/mbbill/undotree)
-Visualize the undo history tree. Neovim's built-in `:undo` is linear; undotree shows the full branching history so you can jump to any previous state.
-
-### [plenary.nvim](https://github.com/nvim-lua/plenary.nvim)
-Utility library (not directly used) — dependency of both Telescope and Harpoon.
-
----
-
-## Keymaps
-
-| Mode | Key                           | Action                          | Plugin / Source     |
-|------|-------------------------------|---------------------------------|---------------------|
-| n    | `<leader>pv`                  | Open file explorer (`:Ex`)      | Built-in (netrw)    |
-| n    | `<leader>gs`                  | Git status (`:Git`)             | vim-fugitive        |
-| n    | `<leader>a`                   | Add current file to harpoon     | harpoon             |
-| n    | `<C-e>`                       | Open harpoon list (Telescope)   | harpoon             |
-| n    | `<C-h>`                       | Jump to harpoon slot 1          | harpoon             |
-| n    | `<C-t>`                       | Jump to harpoon slot 2          | harpoon             |
-| n    | `<C-n>`                       | Jump to harpoon slot 3          | harpoon             |
-| n    | `<C-s>`                       | Jump to harpoon slot 4          | harpoon             |
-| n    | `<C-S-P>`                     | Previous harpoon buffer         | harpoon             |
-| n    | `<C-S-N>`                     | Next harpoon buffer             | harpoon             |
-| n    | `<leader>pf`                  | Find files                      | telescope           |
-| n    | `<C-p>`                       | Git files                       | telescope           |
-| n    | `<leader>fg`                  | Live grep (search file contents)| telescope           |
-| n    | `<leader>ps`                  | Grep string (prompt for query)  | telescope           |
-| n    | `<leader>fb`                  | List buffers                    | telescope           |
-| n    | `<leader>fh`                  | Help tags                       | telescope           |
-| n    | `<leader>u`                   | Toggle undo tree                | undotree            |
-
-**Note:** `<leader>` is set to `Space` (the spacebar).
-
----
-
-## Settings (`set.lua`)
-
-| Option                        | Value       | Effect                               |
-|-------------------------------|-------------|--------------------------------------|
-| `guicursor`                   | `""`        | Block cursor in all modes            |
-| `nu` / `relativenumber`       | `true`      | Hybrid line numbers                  |
-| `tabstop` / `shiftwidth`      | `4`         | 4-space indents                      |
-| `expandtab`                   | `true`      | Tabs → spaces                        |
-| `smartindent`                 | `true`      | Auto-indent                          |
-| `wrap`                        | `false`     | No line wrapping                     |
-| `swapfile` / `backup`         | `false`     | No swap/backup files                 |
-| `undodir`                     | `~/.vim/undodir` | Persistent undo storage         |
-| `undofile`                    | `true`      | Keep undo history between sessions   |
-| `hlsearch`                    | `false`     | Don't highlight all search matches   |
-| `incsearch`                   | `true`      | Highlight matches as you type        |
-| `termguicolors`               | `true`      | 24-bit color support                 |
-| `scrolloff`                   | `8`         | Keep 8 lines visible around cursor   |
-| `signcolumn`                  | `yes`       | Always show sign column              |
-| `updatetime`                  | `50`        | Faster swap/status refresh           |
-| `colorcolumn`                 | `"80"`      | Visual ruler at column 80            |
-
----
-
-## File Structure
+## 📁 Structure
 
 ```
 ~/.config/nvim/
 ├── init.lua                          # Entry point
-├── setup_linux.sh                    # Linux dependency installer
-├── setup_mac.sh                      # macOS dependency installer
-├── lazy-lock.json                    # Plugin version lock
-├── after/plugin/
-│   ├── colors.lua                    # Colorscheme setup
-│   ├── fugative.lua                  # Fugitive keymaps
-│   ├── harpoon.lua                   # Harpoon keymaps
-│   ├── telescope.lua                 # Telescope keymaps
-│   ├── treesitter.lua                # Treesitter config & parsers
-│   └── undotree.lua                  # Undotree keymaps
-└── lua/eugenekallis/
-    ├── init.lua                      # Module loader
-    ├── lazy.lua                      # Lazy.nvim bootstrap & spec
-    ├── set.lua                       # Global options
-    ├── remap.lua                     # General keymaps
-    └── plugins/
-        ├── fugitive.lua              # Plugin spec
-        ├── harpoon.lua               # Plugin spec
-        ├── rose-pine.lua             # Plugin spec + colorscheme
-        ├── telescope.lua             # Plugin spec
-        ├── treesitter.lua            # Plugin spec
-        └── undotree.lua              # Plugin spec
+├── lua/eugenekallis/
+│   ├── init.lua                      # Loads all modules
+│   ├── lazy.lua                      # lazy.nvim bootstrap + setup
+│   ├── remap.lua                     # Leader key + general remaps
+│   ├── set.lua                       # Vim options
+│   ├── lsp.lua                       # LSP keymaps + server configs
+│   └── plugins/
+│       ├── telescope.lua             # Fuzzy finder
+│       ├── treesitter.lua            # Syntax highlighting / parsing
+│       ├── harpoon.lua               # Quick file navigation
+│       ├── fugitive.lua              # Git integration
+│       ├── undotree.lua              # Undo history visualizer
+│       ├── rose-pine.lua             # Colorscheme
+│       └── mason.lua                 # LSP/tool installer
+└── after/plugin/
+    ├── colors.lua                    # Colorscheme + transparency
+    ├── telescope.lua                 # Telescope keymaps
+    ├── harpoon.lua                   # Harpoon keymaps + setup
+    ├── fugative.lua                  # Fugitive keymaps
+    ├── undotree.lua                  # Undotree keymaps
+    └── treesitter.lua               # Treesitter parser install
 ```
+
+---
+
+## 🔌 Plugins
+
+| Plugin | Repository | Description |
+|--------|-----------|-------------|
+| **lazy.nvim** | [folke/lazy.nvim](https://github.com/folke/lazy.nvim) | Plugin manager (bootstrapped) |
+| **Telescope** | [nvim-telescope/telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) | Fuzzy finder for files, grep, buffers, help, git files |
+| **telescope-fzf-native** | [nvim-telescope/telescope-fzf-native.nvim](https://github.com/nvim-telescope/telescope-fzf-native.nvim) | FZF sorter for Telescope (compiled) |
+| **Treesitter** | [nvim-treesitter/nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) | Syntax highlighting, code understanding |
+| **Harpoon** | [ThePrimeagen/harpoon](https://github.com/ThePrimeagen/harpoon) (harpoon2 branch) | Quick file marks & navigation |
+| **vim-fugitive** | [tpope/vim-fugitive](https://github.com/tpope/vim-fugitive) | Git commands inside Vim |
+| **Undotree** | [mbbill/undotree](https://github.com/mbbill/undotree) | Visual undo history |
+| **Rose Pine** | [rose-pine/neovim](https://github.com/rose-pine/neovim) | Colorscheme |
+| **Mason** | [williamboman/mason.nvim](https://github.com/williamboman/mason.nvim) | LSP/tool package manager |
+| **plenary.nvim** | [nvim-lua/plenary.nvim](https://github.com/nvim-lua/plenary.nvim) | Lua utility library (dependency) |
+
+---
+
+## ⌨️ Keymaps
+
+> **Leader key:** `Space`
+
+### General
+
+| Key | Mode | Action | Description |
+|-----|------|--------|-------------|
+| `<leader>pv` | Normal | `:Ex` | Open file explorer (netrw) |
+
+### Telescope
+
+| Key | Mode | Action | Description |
+|-----|------|--------|-------------|
+| `<leader>pf` | Normal | `builtin.find_files` | Find files |
+| `<C-p>` | Normal | `builtin.git_files` | Find git-tracked files |
+| `<leader>fg` | Normal | `builtin.live_grep` | Live grep across project |
+| `<leader>ps` | Normal | `grep_string` | Grep for user-input string |
+| `<leader>fb` | Normal | `builtin.buffers` | List open buffers |
+| `<leader>fh` | Normal | `builtin.help_tags` | Search help tags |
+
+### Harpoon
+
+| Key | Mode | Action | Description |
+|-----|------|--------|-------------|
+| `<leader>a` | Normal | `harpoon:list():add()` | Add current file to Harpoon |
+| `<C-e>` | Normal | Telescope Harpoon picker | Open Harpoon list in Telescope |
+| `<C-h>` | Normal | `harpoon:list():select(1)` | Jump to mark 1 |
+| `<C-t>` | Normal | `harpoon:list():select(2)` | Jump to mark 2 |
+| `<C-n>` | Normal | `harpoon:list():select(3)` | Jump to mark 3 |
+| `<C-s>` | Normal | `harpoon:list():select(4)` | Jump to mark 4 |
+| `<C-S-P>` | Normal | `harpoon:list():prev()` | Previous Harpoon buffer |
+| `<C-S-N>` | Normal | `harpoon:list():next()` | Next Harpoon buffer |
+
+### Git (Fugitive)
+
+| Key | Mode | Action | Description |
+|-----|------|--------|-------------|
+| `<leader>gs` | Normal | `:Git` | Open Fugitive git status |
+
+### Undo Tree
+
+| Key | Mode | Action | Description |
+|-----|------|--------|-------------|
+| `<leader>u` | Normal | `:UndotreeToggle` | Toggle undo history panel |
+
+### LSP (buffer-local, when LSP is attached)
+
+| Key | Mode | Action | Description |
+|-----|------|--------|-------------|
+| `gd` | Normal | `vim.lsp.buf.definition` | Go to definition |
+| `gD` | Normal | `vim.lsp.buf.declaration` | Go to declaration |
+| `gi` | Normal | `vim.lsp.buf.implementation` | Go to implementation |
+| `gr` | Normal | `vim.lsp.buf.references` | Go to references |
+| `K` | Normal | `vim.lsp.buf.hover` | Hover documentation |
+| `<leader>rn` | Normal | `vim.lsp.buf.rename` | Rename symbol under cursor |
+| `<leader>ca` | Normal | `vim.lsp.buf.code_action` | Code action |
+| `<leader>f` | Normal | `vim.lsp.buf.format` | Format buffer (async) |
+| `<leader>e` | Normal | `vim.diagnostic.open_float` | Show diagnostic in float |
+| `[d` | Normal | `vim.diagnostic.goto_prev` | Previous diagnostic |
+| `]d` | Normal | `vim.diagnostic.goto_next` | Next diagnostic |
+
+> Inlay hints are auto-enabled for servers that support them.
+
+---
+
+## 🛠 LSP Servers (via Mason)
+
+Mason auto-installs these servers:
+
+| Server | Language | Config highlights |
+|--------|----------|-------------------|
+| **lua_ls** | Lua | LuaJIT runtime, `vim` global recognized |
+| **gopls** | Go | Static analysis, gofumpt, inlay hints |
+| **pyright** | Python | Default config |
+| **ts_ls** | TypeScript/JS | Complete function calls enabled |
+| **bashls** | Bash/Shell | `*.sh`, `*.bash`, `*.command` glob |
+
+---
+
+## 🎨 Colorscheme
+
+**Rose Pine** with transparent background (`Normal` and `NormalFloat` set to `bg = "none"`).
+
+Call `:ColorMyPencils()` or pass a colorscheme name to switch: `:lua ColorMyPencils("catppuccin")`.
+
+---
+
+## ⚙️ Vim Options
+
+| Option | Value | Description |
+|--------|-------|-------------|
+| `number` + `relativenumber` | `true` | Line numbers with relative offsets |
+| `tabstop` / `softtabstop` / `shiftwidth` | `4` | 4-space indentation |
+| `expandtab` | `true` | Spaces, not tabs |
+| `smartindent` | `true` | Smart auto-indenting |
+| `wrap` | `false` | No line wrapping |
+| `swapfile` / `backup` | `false` | No swap/backup files |
+| `undofile` | `true` | Persistent undo (`~/.vim/undodir`) |
+| `hlsearch` | `false` | No search highlighting |
+| `incsearch` | `true` | Incremental search |
+| `termguicolors` | `true` | 24-bit color |
+| `scrolloff` | `8` | Keep 8 lines above/below cursor |
+| `signcolumn` | `"yes"` | Always show sign column |
+| `updatetime` | `50` | Faster completion/diagnostics |
+| `colorcolumn` | `"80"` | Ruler at column 80 |

@@ -1,8 +1,8 @@
 return {
   "neovim/nvim-lspconfig",
-  event = { "BufReadPre", "BufNewFile" },
-  config = function()
-    -- Keymaps and LSP capabilities can be added here
-    -- Example: enable completion with nvim-cmp if installed
-  end,
+  dependencies = {
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+  },
 }
