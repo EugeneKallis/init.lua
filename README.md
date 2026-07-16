@@ -7,27 +7,38 @@
 ```
 ~/.config/nvim/
 ├── init.lua                          # Entry point
+├── README.md                         # This file
 ├── lua/eugenekallis/
-│   ├── init.lua                      # Loads all modules
+│   ├── init.lua                      # Loads remap, set, lazy
 │   ├── lazy.lua                      # lazy.nvim bootstrap + setup
 │   ├── remap.lua                     # Leader key + general remaps
 │   ├── set.lua                       # Vim options
-│   ├── lsp.lua                       # LSP keymaps + server configs
 │   └── plugins/
+│       ├── catppuccin.lua            # Colorscheme
+│       ├── cmp.lua                   # Autocompletion (nvim-cmp)
+│       ├── fugitive.lua              # Git integration
+│       ├── harpoon.lua               # Quick file navigation
+│       ├── lspconfig.lua             # LSP client config
+│       ├── lualine.lua               # Statusline
+│       ├── mason.lua                 # LSP/tool installer
+│       ├── neo-tree.lua              # File explorer
+│       ├── qkdb-syntax.lua           # q/kdb+ syntax highlighting
+│       ├── render-markdown.lua       # Markdown rendering
 │       ├── telescope.lua             # Fuzzy finder
 │       ├── treesitter.lua            # Syntax highlighting / parsing
-│       ├── harpoon.lua               # Quick file navigation
-│       ├── fugitive.lua              # Git integration
-│       ├── undotree.lua              # Undo history visualizer
-│       ├── rose-pine.lua             # Colorscheme
-│       └── mason.lua                 # LSP/tool installer
+│       └── undotree.lua              # Undo history visualizer
 └── after/plugin/
+    ├── cmp.lua                       # Completion mappings & sources
     ├── colors.lua                    # Colorscheme + transparency
-    ├── telescope.lua                 # Telescope keymaps
-    ├── harpoon.lua                   # Harpoon keymaps + setup
     ├── fugative.lua                  # Fugitive keymaps
-    ├── undotree.lua                  # Undotree keymaps
-    └── treesitter.lua               # Treesitter parser install
+    ├── harpoon.lua                   # Harpoon keymaps + setup
+    ├── lsp.lua                       # Mason + LSP server configs
+    ├── lualine.lua                   # Lualine config
+    ├── neo-tree.lua                  # Neotree keymaps
+    ├── qkdb.lua                      # q/kdb+ filetype settings
+    ├── telescope.lua                 # Telescope keymaps
+    ├── treesitter.lua                # Treesitter parser install
+    └── undotree.lua                  # Undotree keymaps
 ```
 
 ---
@@ -37,15 +48,25 @@
 | Plugin | Repository | Description |
 |--------|-----------|-------------|
 | **lazy.nvim** | [folke/lazy.nvim](https://github.com/folke/lazy.nvim) | Plugin manager (bootstrapped) |
+| **Catppuccin** | [catppuccin/nvim](https://github.com/catppuccin/nvim) | Colorscheme |
 | **Telescope** | [nvim-telescope/telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) | Fuzzy finder for files, grep, buffers, help, git files |
 | **telescope-fzf-native** | [nvim-telescope/telescope-fzf-native.nvim](https://github.com/nvim-telescope/telescope-fzf-native.nvim) | FZF sorter for Telescope (compiled) |
 | **Treesitter** | [nvim-treesitter/nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) | Syntax highlighting, code understanding |
 | **Harpoon** | [ThePrimeagen/harpoon](https://github.com/ThePrimeagen/harpoon) (harpoon2 branch) | Quick file marks & navigation |
 | **vim-fugitive** | [tpope/vim-fugitive](https://github.com/tpope/vim-fugitive) | Git commands inside Vim |
 | **Undotree** | [mbbill/undotree](https://github.com/mbbill/undotree) | Visual undo history |
-| **Rose Pine** | [rose-pine/neovim](https://github.com/rose-pine/neovim) | Colorscheme |
 | **Mason** | [williamboman/mason.nvim](https://github.com/williamboman/mason.nvim) | LSP/tool package manager |
+| **nvim-lspconfig** | [neovim/nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) | LSP client configuration |
+| **nvim-cmp** | [hrsh7th/nvim-cmp](https://github.com/hrsh7th/nvim-cmp) | Autocompletion engine |
+| **LuaSnip** | [L3MON4D3/LuaSnip](https://github.com/L3MON4D3/LuaSnip) | Snippet engine |
+| **Neo-tree** | [nvim-neo-tree/neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim) | File explorer sidebar |
+| **lazygit** | [kdheepak/lazygit.nvim](https://github.com/kdheepak/lazygit.nvim) | Git UI in a floating terminal |
+| **lualine** | [nvim-lualine/lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) | Statusline |
+| **render-markdown** | [MeanderingProgrammer/render-markdown.nvim](https://github.com/MeanderingProgrammer/render-markdown.nvim) | Live markdown rendering |
+| **qkdb-syntax** | [katusk/vim-qkdb-syntax](https://github.com/katusk/vim-qkdb-syntax) | q/kdb+ syntax highlighting |
 | **plenary.nvim** | [nvim-lua/plenary.nvim](https://github.com/nvim-lua/plenary.nvim) | Lua utility library (dependency) |
+| **nui.nvim** | [MunifTanjim/nui.nvim](https://github.com/MunifTanjim/nui.nvim) | UI component library (dependency) |
+| **nvim-web-devicons** | [nvim-tree/nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons) | Filetype icons (dependency) |
 
 ---
 
@@ -83,10 +104,28 @@
 | `<C-S-P>` | Normal | `harpoon:list():prev()` | Previous Harpoon buffer |
 | `<C-S-N>` | Normal | `harpoon:list():next()` | Next Harpoon buffer |
 
-### Git (Fugitive)
+### Neo-tree (File Explorer)
 
 | Key | Mode | Action | Description |
 |-----|------|--------|-------------|
+| `<leader>t` | Normal | `:Neotree` | Toggle file explorer sidebar |
+
+Inside Neo-tree:
+| Key | Mode | Action | Description |
+|-----|------|--------|-------------|
+| `<CR>` | Normal | `open` | Open selected file/folder |
+| `a` | Normal | `add` | Create new file |
+| `d` | Normal | `delete` | Delete selected file |
+| `r` | Normal | `rename` | Rename selected file |
+| `c` | Normal | `copy` | Copy selected file |
+| `p` | Normal | `paste` | Paste file |
+| `q` | Normal | `close` | Close Neo-tree |
+
+### Git
+
+| Key | Mode | Action | Description |
+|-----|------|--------|-------------|
+| `<leader>gg` | Normal | `:LazyGit` | Open lazygit (floating terminal) |
 | `<leader>gs` | Normal | `:Git` | Open Fugitive git status |
 
 ### Undo Tree
@@ -94,6 +133,18 @@
 | Key | Mode | Action | Description |
 |-----|------|--------|-------------|
 | `<leader>u` | Normal | `:UndotreeToggle` | Toggle undo history panel |
+
+### Autocompletion (nvim-cmp)
+
+| Key | Mode | Action | Description |
+|-----|------|--------|-------------|
+| `<C-n>` | Insert/Select | `select_next_item` | Select next completion item |
+| `<C-p>` | Insert/Select | `select_prev_item` | Select previous completion item |
+| `<Tab>` | Insert/Select | `select_next_item` / `luasnip.expand_or_jump` | Next item or expand/jump snippet |
+| `<S-Tab>` | Insert/Select | `select_prev_item` / `luasnip.jump(-1)` | Prev item or jump back in snippet |
+| `<CR>` | Insert | `confirm({ select = true })` | Confirm selected completion |
+| `<C-Space>` | Insert | `complete()` | Trigger completion manually |
+| `<C-e>` | Insert | `abort()` | Cancel completion |
 
 ### LSP (buffer-local, when LSP is attached)
 
@@ -115,6 +166,23 @@
 
 ---
 
+## 📊 Lualine (Statusline)
+
+The statusline is configured with [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) using the **catppuccin** theme. Sections:
+
+| Section | Content |
+|---------|---------|
+| **A** | Mode (INSERT, NORMAL, VISUAL, etc.) |
+| **B** | Git branch, diff, diagnostics |
+| **C** | File path |
+| **X** | Encoding, file format, filetype |
+| **Y** | Progress (% through file) |
+| **Z** | Cursor location (line:col) |
+
+No keymaps needed — it's a display-only plugin.
+
+---
+
 ## 🛠 LSP Servers (via Mason)
 
 Mason auto-installs these servers:
@@ -131,9 +199,9 @@ Mason auto-installs these servers:
 
 ## 🎨 Colorscheme
 
-**Rose Pine** with transparent background (`Normal` and `NormalFloat` set to `bg = "none"`).
+**Catppuccin** with transparent background (`Normal` and `NormalFloat` set to `bg = "none"`).
 
-Call `:ColorMyPencils()` or pass a colorscheme name to switch: `:lua ColorMyPencils("catppuccin")`.
+Call `ColorMyPencils()` or pass a colorscheme name to switch: `:lua ColorMyPencils("rose-pine")`.
 
 ---
 
@@ -155,3 +223,4 @@ Call `:ColorMyPencils()` or pass a colorscheme name to switch: `:lua ColorMyPenc
 | `signcolumn` | `"yes"` | Always show sign column |
 | `updatetime` | `50` | Faster completion/diagnostics |
 | `colorcolumn` | `"80"` | Ruler at column 80 |
+| `guicursor` | `""` | Block cursor in all modes |
